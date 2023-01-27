@@ -1,4 +1,6 @@
+const { timeStamp } = require('console');
 const { Schema, Types } = require('mongoose');
+const dateFormat = require('./date');
 
 const reactionSchema = new Schema(
   {
@@ -18,7 +20,7 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      // Use a getter method to format the timestamp on query
+      get: timeStamp => dateFormat(timeStamp),
     },
   },
   {
@@ -29,6 +31,4 @@ const reactionSchema = new Schema(
   }
 );
 
-// add subdocument aspect
-
-module.exports = assignmentSchema;
+module.exports = reactionSchema;
