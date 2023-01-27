@@ -13,14 +13,16 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      validate(value) {
-        if (!validator.isEmail(value)) {
-          throw new Error("email is not valid");
-        }
-      }
+      match: [/^\S+@\S+\.\S+$/, 'must be a vaild email'],
     },
-    thoughts: [thoughtsSchema],
-    friends: [user],
+    thoughts: [{
+      type: Schema.Types.ObjectId,
+      ref: 'thought'
+    }],
+    friends: [{
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    }],
   },
   {
     toJSON: {
@@ -30,7 +32,7 @@ const userSchema = new Schema(
 );
 
 // Create a virtual called 'friendCount' that retrieves the length of the user's friends array field on query.
-postSchema.virtual('friendCount').get(function () {
+userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 });
 
