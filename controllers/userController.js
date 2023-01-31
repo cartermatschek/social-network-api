@@ -1,4 +1,4 @@
-// ObjectId() method for converting studentId string into an ObjectId for querying database
+// ObjectId() method for converting userId string into an ObjectId for querying database
 const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
@@ -37,7 +37,7 @@ module.exports = {
           ? res.status(404).json({ message: 'No user with that ID' })
           : Thought.deleteMany({ _id: { $in: user.thoughts } })
       )
-      .then(() => res.json({ message: 'Course and students deleted!' }))
+      .then(() => res.json({ message: 'Thoughts and user deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
   // Update a user
@@ -55,7 +55,7 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  // Add an friend to a user
+  // Add a friend to a user
   createFriend(req, res) {
     console.log('You are adding an friend');
     console.log(req.body);
