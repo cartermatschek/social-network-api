@@ -18,12 +18,18 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Create a course
+  // Create a thought
   createThought(req, res) {
     Thought.create(req.body)
+      .then((thought) => {
+        return User.findOneAndUpdate(
+          { username: req.body.username },
+          { $push: { thoughts: thought._id } },
+          { new: true }
+        );
+      })
       .then((thought) => res.json(thought))
       .catch((err) => {
-        console.log(err);
         return res.status(500).json(err);
       });
   },
@@ -67,11 +73,11 @@ module.exports = {
           ? res
               .status(404)
               .json({ message: 'No user found with that ID :(' })
-          : res.json(user)
+          : res.json(User)
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Remove reaction from a user
+  // Remove reaction from a thought
   removeReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
