@@ -56,16 +56,14 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   // Add a reaction to a thought
-  createFriend(req, res) {
-    console.log('You are adding an friend');
-    console.log(req.body);
-    User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $addToSet: { friends: req.params.friendId } },
+  createReaction(req, res) {
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $addToSet: { reactions: req.body } },
       { runValidators: true, new: true }
     )
-      .then((user) =>
-        !user
+      .then((thought) =>
+        !thought
           ? res
               .status(404)
               .json({ message: 'No user found with that ID :(' })
@@ -74,18 +72,18 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   // Remove reaction from a user
-  removeFriend(req, res) {
-    User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $pull: { friends: { friendId: req.params.friendId } } },
+  removeReaction(req, res) {
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { reactionId: req.params.reactionId } } },
       { runValidators: true, new: true }
     )
-      .then((user) =>
-        !user
+      .then((thought) =>
+        !thought
           ? res
               .status(404)
               .json({ message: 'No user found with that ID :(' })
-          : res.json(user)
+          : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
   },
