@@ -1,6 +1,5 @@
-const { timeStamp } = require('console');
 const { Schema, Types } = require('mongoose');
-const dateFormat = require('./date');
+const dateFormat = require('./date.js');
 
 const reactionSchema = new Schema(
   {
